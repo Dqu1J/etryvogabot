@@ -68,6 +68,9 @@ client.on('interactionCreate', async interaction => {
             await interaction.reply({ content: 'You are not an admin!', ephemeral: true });
         }
     }
+    if (commandName === 'regions') {
+        await interaction.reply("See all the available regions at https://www.etryvoga.com/api/v1/notification/region");
+    }
 });
 
 var lastid : number | undefined = undefined;
