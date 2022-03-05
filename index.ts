@@ -86,51 +86,53 @@ client.on('interactionCreate', async interaction => {
     }
 });
 
-var lastid : number | undefined = undefined;
-var announced: [string] = [''];
 function sendAlerts() {
-    let getString = "https://www.etryvoga.com/api/v1/notification?region=ALL";
+    let announced: number = 0;
+    sqlite.getChannels(function(res: any) {
+        for (let channel of res) {
+            channel = channel as Map<String, String>;
+            let getString = "https://www.etryvoga.com/api/v1/notification?region=" + channel.region;
+            let lastid = channel.last;
 
-    fetch(getString)
-    .then(response => response.json())
-    .then(json => {
-        if (lastid === undefined) lastid = json[0].id;
-        let skip = json[0].id - (lastid as number);
-        lastid = json[0].id;
+            fetch(getString)
+            .then(response => response.json())
+            .then(json => {
+                if (lastid === '-1') lastid = json[0].id;
+                let skip = json[0].id - (lastid as number);
+                let announced = channel.announced as string;
 
-        for (let i = 0; i < skip; i++) {
-            let id = json[i].id;
-            let title = json[i].title as string;
-            let desc = json[i].body as string;
-            let date = json[i].createdAtParsed as string;
-            let region = json[i].region as string;
-            
-            if (id in announced) continue;
-            announced.push(id);
+                for (let i = 0; i < skip; i++) {
+                    let id = json[i].id;
+                    let title = json[i].title as string;
+                    let desc = json[i].body as string;
+                    let date = json[i].createdAtParsed as string;
+                    let region = json[i].region as string;
 
-            sqlite.getChannels(function(res: any) {
-                for (let channel of res) {
-                    channel = channel as Map<String, String>;
-                    if ((channel.region !== "ALL") && (channel.region !== region)) continue;
-                    
+                    if (id in announced.split(';')) continue;
+                    announced = announced + id + ';';
+
                     let sendchannel = client.channels.cache.get(channel.channel);
                     if (sendchannel === undefined) continue;
                     sendchannel = sendchannel as DiscordJS.TextChannel;
 
                     let role: string = channel.role;
                     let roleString = (role === '-1') ? '@everyone' : ('<@&' + role + '>')
-                    
+
                     const embed = new MessageEmbed()
                         .setColor('RED')
                         .setTitle(title)
                         .setDescription(desc)
                         .setFooter({text: date + " / " + region, iconURL: undefined});
-                    
-                    sendchannel.send({embeds: [embed], content: roleString})
+                
+                    sendchannel.send({embeds: [embed], content: roleString});
+                    announced += 1;
                 }
-            });
+
+                sqlite.updateLast(json[0].id, channel.channel, announced);
+            })
         }
     })
+    console.log('Announced ' + announced);
 }
 
 client.on('ready', () => {
