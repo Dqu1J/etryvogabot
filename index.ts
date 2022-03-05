@@ -34,6 +34,7 @@ client.on('interactionCreate', async interaction => {
                 await interaction.reply({ content: 'Region required!', ephemeral: true });
                 return;
             }
+            option = option.replace(/\s/g, '');
 
             let role = interaction.options.getRole('role');
             let roleid;
