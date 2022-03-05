@@ -38,7 +38,7 @@ client.on('interactionCreate', async interaction => {
             let role = interaction.options.getRole('role');
             let roleid;
             if (role == null) {
-                roleid = '-1/';
+                roleid = '-1';
             } else {
                 role = role as DiscordJS.Role;
                 roleid = role.id;
