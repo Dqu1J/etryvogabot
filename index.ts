@@ -69,7 +69,19 @@ client.on('interactionCreate', async interaction => {
         }
     }
     if (commandName === 'regions') {
-        await interaction.reply("See all the available regions at https://www.etryvoga.com/api/v1/notification/region");
+        let str = 'https://www.etryvoga.com/api/v1/notification/region';
+        fetch(str)
+        .then(response => response.json())
+        .then(async json => {
+            let values = Object.keys(json);
+            const embed = new MessageEmbed()
+                .setTitle('Available Regions / Доступні регіони')
+                .setDescription(values.join(', '))
+                .setColor('GREY')
+                .setURL(str)
+            
+            await interaction.reply({embeds: [embed]})
+        })
     }
 });
 
