@@ -87,7 +87,6 @@ client.on('interactionCreate', async interaction => {
 });
 
 function sendAlerts() {
-    let announces: number = 0;
     sqlite.getChannels(function(res: any) {
         for (let channel of res) {
             channel = channel as Map<String, String>;
@@ -125,14 +124,13 @@ function sendAlerts() {
                         .setFooter({text: date + " / " + region, iconURL: undefined});
                 
                     sendchannel.send({embeds: [embed], content: roleString});
-                    announces += 1;
                 }
 
                 sqlite.updateLast(json[0].id, channel.channel, announced);
             })
         }
     })
-    console.log('Announced ' + announces);
+    console.log('Announced');
 }
 
 client.on('ready', () => {
