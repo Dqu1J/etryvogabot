@@ -10,6 +10,6 @@ Create a `config.json` file:
 }
 ```
 
-Run ./deployCommands.ts
-Run ./setupDb.ts
-Then, run the bot: ./index.ts
+Run ./deployCommands.ts  
+Run ./setupDb.ts  
+Then, run the bot: ./index.ts  
