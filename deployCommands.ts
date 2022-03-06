@@ -12,7 +12,8 @@ const commands = [
         .addRoleOption(option => option.setName('role').setDescription('Role to ping about alerts, leave blank for @everyone').setRequired(false)),
     new SlashCommandBuilder().setName('removealert').setDescription('Clears alerts from a channel')
         .addChannelOption(option => option.setName('channel').setRequired(true).setDescription('Channel')),
-    new SlashCommandBuilder().setName('regions').setDescription('Displays all the regions available to notify you about')
+    new SlashCommandBuilder().setName('regions').setDescription('Displays all the regions available to notify you about'),
+    new SlashCommandBuilder().setName('shelters').setDescription('Displays shelters of major cities of Ukraine')
 ]
     .map(command => command.toJSON());
 

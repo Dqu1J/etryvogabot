@@ -1,4 +1,4 @@
-import DiscordJS, { Intents, MessageEmbed, Permissions, TextChannel } from 'discord.js';
+import DiscordJS, { Intents, MessageActionRow, MessageButton, MessageComponentInteraction, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import fetch from 'node-fetch';
 
 const { token } = require('./config.json');
@@ -83,6 +83,21 @@ client.on('interactionCreate', async interaction => {
             
             await interaction.reply({embeds: [embed]})
         })
+    }
+    if (commandName === 'shelters') {
+        const embed = new MessageEmbed()
+            .setTitle('Bomb Shelters / Бомбосховища')
+            .setColor('GREY')
+        
+        const row = new MessageActionRow()
+            .addComponents(
+                new MessageButton()
+                    .setStyle('LINK')
+                    .setURL('https://github.com/Dqu1J/shelters')
+                    .setLabel('🏠')
+            );
+        
+        await interaction.reply({embeds: [embed], components: [row]});
     }
 });
 
