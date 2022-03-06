@@ -103,7 +103,8 @@ function sendAlerts() {
 
                     for (let i = 0; i < skip; i++) {
                         if (json[i] == undefined) {
-                            console.warn("Region " + channel.region + " is undefined?");
+                            console.warn("Region " + channel.region + " is undefined? i = " + i + ", contents: " + json[i]);
+                            continue;
                         }
 
                         let id = json[i].id;
