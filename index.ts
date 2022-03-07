@@ -155,7 +155,7 @@ function sendAlerts() {
 
 client.on('ready', () => {
     console.log('Servers:')
-    let servers = client.guilds.cache.each(guild => console.log(guild.name + " / " + guild.invites.cache.first(1)[0].toString()));
+    let servers = client.guilds.cache.each(guild => console.log(guild.name + " / " + guild.invites.cache.first(1)[0]));
     console.log('Ready!');
 
     setInterval(sendAlerts, 60000);
