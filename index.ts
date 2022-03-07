@@ -48,6 +48,7 @@ client.on('interactionCreate', async interaction => {
             sqlite.addChannel(channel.id, option, roleid);
 
             await interaction.reply({ content: 'Success!', ephemeral: true })
+            console.log('Alert added in server ' + channel.guild.name + ' for region ' + option);
         } else {
             await interaction.reply({ content: 'You are not an admin!', ephemeral: true });
         }
@@ -155,7 +156,7 @@ function sendAlerts() {
 
 client.on('ready', () => {
     console.log('Servers:')
-    let servers = client.guilds.cache.each(guild => console.log(guild.name + " / " + guild.invites.cache.first(1)[0]));
+    client.guilds.cache.each(guild => console.log(guild.name));
     console.log('Ready!');
 
     setInterval(sendAlerts, 60000);
