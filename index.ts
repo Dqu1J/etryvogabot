@@ -1,4 +1,4 @@
-import DiscordJS, { Intents, MessageActionRow, MessageButton, MessageComponentInteraction, MessageEmbed, Permissions, TextChannel } from 'discord.js';
+import DiscordJS, { ColorResolvable, Intents, MessageActionRow, MessageButton, MessageComponentInteraction, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import fetch from 'node-fetch';
 
 const { token } = require('./config.json');
@@ -127,6 +127,11 @@ function sendAlerts() {
 
                         if (id <= lastid) continue;
 
+                        let color: ColorResolvable = 'RED';
+                        if (desc.toLowerCase().includes('відбій')) {
+                            color = 'GREEN';
+                        }
+
                         let sendchannel = client.channels.cache.get(channel.channel);
                         if (sendchannel === undefined) continue;
                         sendchannel = sendchannel as DiscordJS.TextChannel;
@@ -135,7 +140,7 @@ function sendAlerts() {
                         let roleString = (role === '-1') ? '@everyone' : ('<@&' + role + '>')
 
                         const embed = new MessageEmbed()
-                            .setColor('RED')
+                            .setColor(color)
                             .setTitle(title)
                             .setDescription(desc)
                             .setFooter({text: date + " / " + region, iconURL: undefined});
