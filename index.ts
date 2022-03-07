@@ -114,7 +114,6 @@ function sendAlerts() {
                 .then(json => {
                     if (lastid === '-1') lastid = json[0].id;
                     let skip = json[0].id - (lastid as number);
-                    let announced = channel.announced as string;
 
                     for (let i = 0; i < skip; i++) {
                         if (json[i] == undefined) continue;
@@ -125,8 +124,7 @@ function sendAlerts() {
                         let date = json[i].createdAtParsed as string;
                         let region = json[i].region as string;
 
-                        if (id in announced.split(';')) continue;
-                        announced = announced + id + ';';
+                        if (id <= lastid) continue;
 
                         let sendchannel = client.channels.cache.get(channel.channel);
                         if (sendchannel === undefined) continue;
@@ -144,7 +142,7 @@ function sendAlerts() {
                         sendchannel.send({embeds: [embed], content: roleString});
                     }
 
-                    sqlite.updateLast(json[0].id, channel.channel, announced);
+                    sqlite.updateLast(json[0].id, channel.channel);
                 })
             }
         })
@@ -156,7 +154,9 @@ function sendAlerts() {
 }
 
 client.on('ready', () => {
-    console.log('Ready');
+    console.log('Servers:')
+    let servers = client.guilds.cache.each(guild => console.log(guild.name + " / " + guild.invites.cache.first(1)[0].toString()));
+    console.log('Ready!');
 
     setInterval(sendAlerts, 60000);
 });

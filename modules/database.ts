@@ -3,7 +3,7 @@ var db = new sqlite3.Database("database.db");
 
 module.exports = {
     setup: function() {
-        db.run("CREATE TABLE channels (channel TEXT, region TEXT, role TEXT, last TEXT, announced TEXT)")
+        db.run("CREATE TABLE channels (channel TEXT, region TEXT, role TEXT, last TEXT)")
     },
     getChannels: function(callback:any){
         db.all("SELECT * FROM channels", function(err:any, res:any){
@@ -12,12 +12,11 @@ module.exports = {
     },
     addChannel: function(channelid:String, region:String, role:String){
         // Add a task to the todo list.
-        db.run("INSERT INTO channels VALUES ($channel, $region, $role, $a, $b)", {
+        db.run("INSERT INTO channels VALUES ($channel, $region, $role, $last)", {
             $channel: channelid,
             $region: region,
             $role: role,
-            $a: '-1',
-            $b: ''
+            $last: '-1'
         });
     },
     removeChannel: function(channelid:string){
@@ -26,11 +25,10 @@ module.exports = {
             $channel: channelid
         });
     },
-    updateLast: function(last:string, channel:string, announced:string) {
-        db.run("UPDATE channels SET last=$last, announced=$announced WHERE channel=$channel", {
+    updateLast: function(last:string, channel:string) {
+        db.run("UPDATE channels SET last=$last WHERE channel=$channel", {
             $channel: channel,
-            $last: last,
-            $announced: announced
+            $last: last
         });
     }
 };
