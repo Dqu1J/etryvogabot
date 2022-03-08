@@ -124,12 +124,15 @@ function sendAlerts() {
                         let desc = json[i].body as string;
                         let date = json[i].createdAtParsed as string;
                         let region = json[i].region as string;
+                        let type = json[i].type as string;
 
                         if (id <= lastid) continue;
 
-                        let color: ColorResolvable = 'RED';
-                        if (desc.toLowerCase().includes('відбій')) {
+                        let color: ColorResolvable = 'BLURPLE';
+                        if (type === 'CANCEL') {
                             color = 'GREEN';
+                        } else if (type === 'SIREN') {
+                            color = 'RED';
                         }
 
                         let sendchannel = client.channels.cache.get(channel.channel);
