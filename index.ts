@@ -147,8 +147,12 @@ function sendAlerts() {
                             .setTitle(title)
                             .setDescription(desc)
                             .setFooter({text: date + " / " + region, iconURL: undefined});
-                    
-                        sendchannel.send({embeds: [embed], content: roleString});
+                        
+                        try {
+                            sendchannel.send({embeds: [embed], content: roleString});
+                        } catch (e) {
+                            continue;
+                        }
                     }
 
                     sqlite.updateLast(json[0].id, channel.channel);
