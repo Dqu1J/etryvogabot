@@ -149,7 +149,10 @@ function sendAlerts() {
                             .setFooter({text: date + " / " + region, iconURL: undefined});
                         
                         try {
-                            sendchannel.send({embeds: [embed], content: roleString});
+                            if (sendchannel.guild.me === null) continue;
+                            if (sendchannel.permissionsFor(sendchannel.guild.me).toArray().includes("SEND_MESSAGES")) {
+                                sendchannel.send({embeds: [embed], content: roleString});
+                            }
                         } catch (e) {
                             continue;
                         }
