@@ -133,6 +133,8 @@ function sendAlerts() {
                             color = 'GREEN';
                         } else if (type === 'SIREN') {
                             color = 'RED';
+                        } else if (type === 'ARTILLERY') {
+                            color = 'ORANGE';
                         }
 
                         let sendchannel = client.channels.cache.get(channel.channel);
